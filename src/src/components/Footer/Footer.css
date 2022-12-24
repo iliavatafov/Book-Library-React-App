@@ -1,0 +1,90 @@
+.footer {
+  background: rgba(0, 0, 0, 0.9);
+  color: #fff;
+  position: absolute;
+  bottom: 0;
+  z-index: 2;
+  width: 100vw;
+  padding: 1rem;
+}
+
+.footer h2 {
+  font-weight: 400;
+  color: tomato;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.footer ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  list-style-type: none;
+  font-size: 0.7rem;
+  font-weight: 300;
+}
+
+.footer ul li a {
+  text-decoration: none;
+  color: #fff;
+}
+
+.footer ul li a:hover {
+  color: tomato;
+}
+
+.footer .social-links .list {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  font-size: 1.2rem;
+  gap: 1rem;
+}
+
+.logo {
+  text-align: center;
+}
+
+.footer .social-links .list i {
+  cursor: pointer;
+}
+
+.footer .social-links .list i:hover {
+  color: tomato;
+}
+
+.text-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media screen and (max-width: 740px) {
+  .text-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .text-content h2 {
+    font-size: 0.7rem;
+  }
+  .text-content ul li {
+    font-size: 0.5rem;
+  }
+  .social-links ul li {
+    font-size: 0.7rem;
+  }
+  .footer ul {
+    gap: 0.2rem;
+  }
+  .footer h2 {
+    margin-bottom: 0.3rem;
+  }
+  .footer .text-content {
+    gap: 1rem;
+  }
+}
