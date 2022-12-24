@@ -8,6 +8,27 @@ nav {
   z-index: 99;
 }
 
+.search-box {
+  width: 30vw;
+}
+
+.search-box input {
+  width: 100%;
+  height: 1.9rem;
+  padding-left: 1rem;
+  border: none;
+  border-radius: 0.2rem;
+  background-color: rgba(255, 245, 245, 0.2);
+}
+
+.search-box input:focus {
+  background-color: #fff;
+}
+
+.search-box input::placeholder {
+  font-size: 0.8rem;
+}
+
 .nav-icon {
   display: none;
 }
@@ -27,6 +48,7 @@ nav {
 }
 
 .logo {
+  text-decoration: none;
   font-weight: 600;
   font-size: 25px;
   color: tomato;
@@ -41,6 +63,11 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.links {
+  display: flex;
+  gap: 1rem;
 }
 
 .nav-list li a {
@@ -68,7 +95,24 @@ nav {
   transition: all 0.5s ease-in-out;
 }
 
-@media screen and (max-width: 800px) {
+.search-cart-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 10%;
+}
+
+.search-cart-container i {
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #fff;
+}
+
+.search-cart-container i:hover {
+  color: tomato;
+}
+
+@media screen and (max-width: 860px) {
   .logo {
     font-size: 20px;
   }
@@ -76,11 +120,24 @@ nav {
     font-size: 14px;
     margin-left: 10px;
   }
+  .search-cart-container i {
+    font-size: 1rem;
+  }
+  .search-box {
+    display: flex;
+    align-items: center;
+    width: 45vw;
+  }
+  .search-box input::placeholder {
+    font-size: 0.6rem;
+  }
 }
 
-@media screen and (max-width: 650px) {
+@media screen and (max-width: 740px) {
   .nav-icon {
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .nav-list {
     flex-direction: column;
@@ -110,5 +167,26 @@ nav {
   .nav-list.close {
     right: -100%;
     transition: all 0.5s ease-in-out;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .logo {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+  }
+  .search-box {
+    width: 40vw;
+  }
+  .search-box input {
+    font-size: 0.5rem;
+    height: 1.7rem;
+  }
+  .search-box input::placeholder {
+    font-size: 0.5rem;
+  }
+  .search-cart-container i {
+    font-size: 0.9rem;
   }
 }
