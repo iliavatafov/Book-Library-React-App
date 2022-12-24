@@ -9,7 +9,7 @@
   background: url("./images/taisiia-shestopal-Ho20JoDSz3I-unsplash.jpg");
   background-position: center;
   background-size: cover;
-  min-height: 710px;
+  min-height: 740px;
   height: 100vh;
   width: 100%;
   position: relative;
@@ -45,6 +45,17 @@
   background-color: rgba(0, 0, 0, 0.5);
   padding: 0px 20px;
   border-radius: 2px;
+}
+@media screen and (min-height: 900px) {
+  .container {
+    min-height: 600px;
+  }
+}
+
+@media screen and (min-height: 800px) {
+  .container {
+    min-height: 600px;
+  }
 }
 
 @media screen and (max-width: 740px) {

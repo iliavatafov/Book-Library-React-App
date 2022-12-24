@@ -167,3 +167,9 @@
     margin: 13rem auto;
   }
 }
+
+@media screen and (min-height: 1030px) {
+  #register-page #register {
+    margin: 15rem auto;
+  }
+}
