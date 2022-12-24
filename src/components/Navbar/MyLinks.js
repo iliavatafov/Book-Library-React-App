@@ -1,15 +1,15 @@
 export const MyLinks = [
   {
-    title: "Home",
-    url: "/",
-  },
-  {
     title: "Books",
     url: "/books",
   },
   {
     title: "Favorites",
     url: "/favorites",
+  },
+  {
+    title: "About",
+    url: "/about",
   },
   {
     title: "Contacts",

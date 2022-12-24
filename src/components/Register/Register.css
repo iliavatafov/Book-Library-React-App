@@ -1,0 +1,169 @@
+#register-page {
+  width: 100%;
+  height: 100%;
+}
+
+#register-page #register {
+  margin: 3rem auto;
+  background-color: rgba(0, 0, 0, 0.9);
+  width: 35%;
+  border-radius: 0.5rem;
+  padding: 2rem;
+}
+
+#register-page #register .register-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+#register-page #register .register-container h1 {
+  color: #fff;
+  font-weight: 500;
+}
+
+#register-page #register .register-container .input-container {
+  width: 100%;
+  height: 3rem;
+  color: #fff;
+  font-size: 1rem;
+}
+
+#register-page #register .register-container .input-container label {
+  font-size: 1rem;
+  font-weight: 300;
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+#register-page #register .register-container .input-container input {
+  border-radius: 0.5rem;
+  padding-left: 1rem;
+  height: 2rem;
+  width: 100%;
+}
+
+#register-page #register .register-container .submit {
+  border: none;
+  cursor: pointer;
+  font-weight: 400;
+  padding: 5px 10px;
+  background-color: tomato;
+  transition: all 0.5s ease-in-out;
+  border-radius: 0.5rem;
+  width: 50%;
+  height: 2.5rem;
+  align-self: center;
+  color: #fff;
+  font-size: 1rem;
+}
+
+#register-page #register .register-container .submit:hover {
+  background-color: #fff;
+  font-weight: 400;
+  color: #000;
+  transition: all 0.5s ease-in-out;
+}
+
+.field {
+  color: #fff;
+  font-weight: 300;
+  font-size: 1rem;
+}
+
+.field a {
+  color: tomato;
+  text-decoration: none;
+}
+
+.field a:hover {
+  font-weight: 500;
+}
+
+@media screen and (max-width: 1300px) {
+  #register-page #register {
+    width: 40%;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  #register-page #register {
+    width: 45%;
+  }
+}
+
+@media screen and (max-width: 860px) {
+  #register-page #register {
+    width: 65%;
+  }
+
+  #register-page #register .register-container h1 {
+    font-size: 1.5rem;
+  }
+
+  #register-page
+    #register
+    .register-container
+    .input-container
+    input::placeholder {
+    font-size: 0.9rem;
+  }
+  #register-page #register .register-container .input-container label {
+    font-size: 0.9rem;
+  }
+  #register-page #register .register-container .submit {
+    font-size: 0.9rem;
+  }
+
+  .field {
+    font-size: 0.9rem;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  #register-page #register {
+    width: 80%;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  #register-page #register {
+    width: 90%;
+  }
+}
+
+@media screen and (min-height: 800px) {
+  #register-page #register {
+    margin: 5rem auto;
+  }
+}
+
+@media screen and (min-height: 860px) {
+  #register-page #register {
+    margin: 7rem auto;
+  }
+}
+
+@media screen and (min-height: 920px) {
+  #register-page #register {
+    margin: 9rem auto;
+  }
+}
+
+@media screen and (min-height: 960px) {
+  #register-page #register {
+    margin: 11rem auto;
+  }
+}
+
+@media screen and (min-width: 2100px) {
+  #register-page #register {
+    width: 30%;
+  }
+}
+
+@media screen and (min-height: 990px) {
+  #register-page #register {
+    margin: 13rem auto;
+  }
+}
