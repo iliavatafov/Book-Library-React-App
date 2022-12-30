@@ -1,13 +1,43 @@
-import { MyLinks } from "./MyLinks";
+import { MyLinks, MyLinksAdmin, MyLinksLoggedIn } from "./MyLinks";
 import "../Navbar/Navbar.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { getUserProfile } from "../../apis/users";
+import { useEffect } from "react";
 
 export const Navbar = () => {
   const [clicked, setClicked] = useState(false);
   const [searchClicked, setSearchClicked] = useState(false);
+  const [manuToRender, setMenuToRender] = useState([]);
 
-  const myLinks = MyLinks.map(({ title, url }, index) => {
+  const navigate = useNavigate();
+
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const getData = async () => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (user) {
+        const userId = JSON.parse(localStorage.getItem("user")).id;
+        const response = await getUserProfile(userId);
+        if (response.data?.isAdmin === true) {
+          setMenuToRender(MyLinksAdmin);
+        } else {
+          setMenuToRender(MyLinksLoggedIn);
+        }
+      } else {
+        setMenuToRender(MyLinks);
+      }
+    } catch (error) {
+      window.alert(error.message);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, [user]);
+
+  const myLinks = manuToRender.map(({ title, url }, index) => {
     return (
       <li key={index}>
         <Link to={url} className="actve">
@@ -23,6 +53,12 @@ export const Navbar = () => {
 
   const navbarClickHandler = () => {
     setClicked(!clicked);
+  };
+
+  const logOutHandler = () => {
+    localStorage.removeItem("user");
+    setMenuToRender(MyLinks);
+    navigate("/login");
   };
 
   return (
@@ -48,6 +84,13 @@ export const Navbar = () => {
               </div>
               <ul className={clicked ? "nav-list" : "nav-list close"}>
                 {myLinks}
+                {user && (
+                  <li onClick={logOutHandler} className="logout">
+                    <Link to="/" className="actve">
+                      Logout
+                    </Link>
+                  </li>
+                )}
               </ul>
             </>
           )}

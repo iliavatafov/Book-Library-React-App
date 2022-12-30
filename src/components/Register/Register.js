@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { RegisterUser } from "../../apis/authentication";
 import "../Register/Register.css";
 
 export const Register = () => {
@@ -9,6 +10,8 @@ export const Register = () => {
     confirmPassword: "",
   });
 
+  const navigate = useNavigate();
+
   const onChange = (e) => {
     setInputValues((oldValues) => ({
       ...oldValues,
@@ -16,7 +19,7 @@ export const Register = () => {
     }));
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
 
     const { email, password, confirmPassword } = inputValues;
@@ -26,12 +29,33 @@ export const Register = () => {
       return;
     }
 
-    if (password != confirmPassword) {
+    if (password !== confirmPassword) {
       window.alert("Password don`t match!");
       return;
     }
 
-    console.log(email, password);
+    try {
+      const response = await RegisterUser({ email, password });
+
+      if (response.success) {
+        window.alert(response.message);
+        navigate("/login");
+        setInputValues({
+          email: "",
+          password: "",
+          confirmPassword: "",
+        });
+      } else {
+        window.alert(response.message);
+        setInputValues({
+          email: "",
+          password: "",
+          confirmPassword: "",
+        });
+      }
+    } catch (error) {
+      window.alert(error.message);
+    }
   };
 
   return (
@@ -55,6 +79,7 @@ export const Register = () => {
             <input
               type="password"
               name="password"
+              autoComplete="on"
               placeholder="..."
               id="register-password"
               onChange={onChange}
@@ -66,13 +91,14 @@ export const Register = () => {
             <input
               type="password"
               name="confirmPassword"
+              autoComplete="on"
               placeholder="..."
               id="confirmPassword"
               onChange={onChange}
-              value={inputValues["confirm-password"]}
+              value={inputValues.confirmPassword}
             />
           </div>
-          <input className="btn submit" type="submit" defaultValue="Register" />
+          <input className="btn submit" type="submit" value="Register" />
           <p className="field">
             <span>
               If you already have profile click <Link to="/login">here</Link>

@@ -4,10 +4,6 @@ export const MyLinks = [
     url: "/books",
   },
   {
-    title: "Favorites",
-    url: "/favorites",
-  },
-  {
     title: "About",
     url: "/about",
   },
@@ -22,5 +18,35 @@ export const MyLinks = [
   {
     title: "Register",
     url: "/register",
+  },
+];
+
+export const MyLinksLoggedIn = [
+  {
+    title: "Books",
+    url: "/books",
+  },
+  {
+    title: "Favorites",
+    url: "/favorites",
+  },
+  {
+    title: "About",
+    url: "/about",
+  },
+  {
+    title: "Contacts",
+    url: "/contacts",
+  },
+];
+
+export const MyLinksAdmin = [
+  {
+    title: "Books",
+    url: "/books",
+  },
+  {
+    title: "Add Book",
+    url: "/add-book",
   },
 ];
