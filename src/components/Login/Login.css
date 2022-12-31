@@ -1,15 +1,13 @@
 #login-page {
   width: 100%;
-  height: 100%;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-bottom: 15rem;
 }
 
 #login-page #login {
-  margin: 3rem auto;
   background-color: rgba(0, 0, 0, 0.9);
   width: 35%;
   border-radius: 0.5rem;
@@ -100,9 +98,30 @@
   font-weight: 500;
 }
 
-@media screen and (min-height: 300px) and (max-width: 700px) {
+@media screen and (min-width: 740px) {
   #login-page {
-    padding-bottom: 23rem;
+    min-height: 600px;
+  }
+  #login-page #login {
+    margin-bottom: 8rem;
+  }
+}
+
+@media screen and (max-width: 740px) {
+  #login-page {
+    min-height: 800px;
+  }
+  #login-page #login {
+    margin-bottom: 19rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  #login-page {
+    min-height: 700px;
+  }
+  #login-page #login {
+    margin-bottom: 15rem;
   }
 }
 
@@ -161,13 +180,6 @@
 
 @media screen and (max-width: 300px) {
   #login-page #login {
-    margin: 1rem auto;
     width: 95%;
-  }
-}
-
-@media screen and (max-width: 300px) {
-  #login-page #login {
-    margin: 2rem auto;
   }
 }
