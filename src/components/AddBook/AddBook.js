@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { CreateBook } from "../../apis/books";
 import "../AddBook/AddBook.css";
 
 export const AddBook = () => {
@@ -11,7 +13,10 @@ export const AddBook = () => {
     size: "",
     pageCount: "",
     issueYear: "",
+    rating: "0",
   });
+
+  const navigate = useNavigate();
 
   const onChange = (e) => {
     setInputValues((oldValues) => ({
@@ -23,11 +28,31 @@ export const AddBook = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(inputValues);
-
     if (Object.values(inputValues).some((x) => x === "")) {
       window.alert("All fileds are required!");
       return;
+    }
+
+    try {
+      const response = await CreateBook(inputValues);
+
+      if (response.success) {
+        window.alert(response.message);
+        setInputValues({
+          title: "",
+          imageUrl: "",
+          description: "",
+          author: "",
+          genre: "",
+          size: "",
+          pageCount: "",
+          issueYear: "",
+          rating: "0",
+        });
+        navigate("/");
+      }
+    } catch (error) {
+      window.alert(error.message);
     }
   };
 
@@ -94,7 +119,7 @@ export const AddBook = () => {
               id="genre"
               name="genre"
               onChange={onChange}
-              value={inputValues.author}
+              value={inputValues.genre}
             />
           </div>
           <div className="input-container">
