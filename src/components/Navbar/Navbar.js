@@ -1,9 +1,9 @@
 import { MyLinks, MyLinksAdmin, MyLinksLoggedIn } from "./MyLinks";
 import "../Navbar/Navbar.css";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { getUserProfile } from "../../apis/users";
+import { useContext, useState } from "react";
 import { useEffect } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 export const Navbar = () => {
   const [clicked, setClicked] = useState(false);
@@ -12,29 +12,18 @@ export const Navbar = () => {
 
   const navigate = useNavigate();
 
-  const user = JSON.parse(localStorage.getItem("user"));
-
-  const getData = async () => {
-    try {
-      const user = JSON.parse(localStorage.getItem("user"));
-      if (user) {
-        const userId = JSON.parse(localStorage.getItem("user")).id;
-        const response = await getUserProfile(userId);
-        if (response.data?.isAdmin === true) {
-          setMenuToRender(MyLinksAdmin);
-        } else {
-          setMenuToRender(MyLinksLoggedIn);
-        }
-      } else {
-        setMenuToRender(MyLinks);
-      }
-    } catch (error) {
-      window.alert(error.message);
-    }
-  };
+  const { user, userLogin } = useContext(AuthContext);
 
   useEffect(() => {
-    getData();
+    if (user.email) {
+      if (user.isAdmin) {
+        setMenuToRender(MyLinksAdmin);
+      } else {
+        setMenuToRender(MyLinksLoggedIn);
+      }
+    } else {
+      setMenuToRender(MyLinks);
+    }
   }, [user]);
 
   const myLinks = manuToRender.map(({ title, url }, index) => {
@@ -57,6 +46,7 @@ export const Navbar = () => {
 
   const logOutHandler = () => {
     localStorage.removeItem("user");
+    userLogin({});
     setMenuToRender(MyLinks);
     navigate("/login");
   };
@@ -84,7 +74,7 @@ export const Navbar = () => {
               </div>
               <ul className={clicked ? "nav-list" : "nav-list close"}>
                 {myLinks}
-                {user && (
+                {user.email && (
                   <li onClick={logOutHandler} className="logout">
                     <Link to="/" className="actve">
                       Logout

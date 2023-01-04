@@ -1,6 +1,8 @@
+import { useContext } from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { LoginUser } from "../../apis/authentication";
+import { AuthContext } from "../../context/AuthContext";
 import "../Login/Login.css";
 
 export const Login = () => {
@@ -8,6 +10,8 @@ export const Login = () => {
     email: "",
     password: "",
   });
+
+  const { userLogin } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -32,6 +36,7 @@ export const Login = () => {
       const response = await LoginUser({ email, password });
 
       if (response.success) {
+        userLogin(response.data);
         localStorage.setItem("user", JSON.stringify(response.data));
         navigate("/");
         setInputValues({

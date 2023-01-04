@@ -1,7 +1,10 @@
-function ProtectedRoute({ children }) {
-  const user = JSON.parse(localStorage.getItem("user"));
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
-  if (user) {
+function ProtectedRoute({ children }) {
+  const { user } = useContext(AuthContext);
+
+  if (user.email) {
     return children;
   } else {
     window.location.href = "/";

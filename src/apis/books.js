@@ -1,14 +1,31 @@
-import { addDoc, collection, getDocs, query } from "firebase/firestore";
+import { async } from "@firebase/util";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  orderBy,
+  query,
+} from "firebase/firestore";
+import moment from "moment/moment";
 import { fireDB } from "../FirebaseConfig/firebaseConfig";
 
 export const CreateBook = async (payload) => {
   try {
-    const response = await addDoc(collection(fireDB, "books"), payload);
+    const createdAt = moment().format("MMMM Do YYYY, h:mm:ss a");
+
+    const response = await addDoc(collection(fireDB, "books"), {
+      createdAt,
+      ...payload,
+    });
+
+    const bookData = await GetOneBook(response.id);
 
     return {
       success: true,
       message: "The book is successfuly added",
-      data: response,
+      data: bookData,
     };
   } catch (error) {
     return {
@@ -21,8 +38,11 @@ export const CreateBook = async (payload) => {
 
 export const GetAllBooks = async () => {
   try {
-    const applications = [];
-    const qry = query(collection(fireDB, "books"));
+    let applications = [];
+    const qry = query(
+      collection(fireDB, "books"),
+      orderBy("createdAt", "desc")
+    );
     const querySnapshot = await getDocs(qry);
     querySnapshot.forEach((doc) => {
       applications.push({ id: doc.id, ...doc.data() });
@@ -38,6 +58,48 @@ export const GetAllBooks = async () => {
       success: false,
       message: error.message,
       data: null,
+    };
+  }
+};
+
+export const GetOneBook = async (bookId) => {
+  try {
+    let book = {};
+    const qry = query(
+      collection(fireDB, "books"),
+      orderBy("createdAt", "desc")
+    );
+    const querySnapshot = await getDocs(qry);
+    querySnapshot.forEach((doc) => {
+      if (doc.id === bookId) {
+        book = { id: doc.id, ...doc.data() };
+      }
+    });
+    return {
+      success: true,
+      message: "The books are fetched correctly",
+      data: book,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message,
+      data: null,
+    };
+  }
+};
+
+export const DeleteBook = async (bookId) => {
+  try {
+    await deleteDoc(doc(fireDB, "books", bookId));
+    return {
+      success: true,
+      message: "Book delete successfully",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: "Somthing went wrong",
     };
   }
 };

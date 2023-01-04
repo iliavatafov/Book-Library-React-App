@@ -87,7 +87,10 @@ export const RegisterUser = async (payload) => {
     return {
       success: true,
       message: "User Registered Successfully",
-      data: response,
+      data: {
+        id: response.id,
+        ...payload,
+      },
     };
   } catch (error) {
     return {

@@ -6,6 +6,7 @@
 }
 body {
   background: rgba(0, 0, 0, 0.9);
+  height: 100vh;
 }
 
 .container {
@@ -17,6 +18,7 @@ body {
   width: 100%;
   position: relative;
   overflow: clip;
+  height: 100%;
 }
 
 .page-heading {

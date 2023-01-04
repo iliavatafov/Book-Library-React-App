@@ -1,6 +1,7 @@
+import { useContext } from "react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { CreateBook } from "../../apis/books";
+import { BookContext } from "../../context/BookContext";
 import "../AddBook/AddBook.css";
 
 export const AddBook = () => {
@@ -11,12 +12,13 @@ export const AddBook = () => {
     author: "",
     genre: "",
     size: "",
+    price: "",
     pageCount: "",
     issueYear: "",
     rating: "0",
   });
 
-  const navigate = useNavigate();
+  const { addBook } = useContext(BookContext);
 
   const onChange = (e) => {
     setInputValues((oldValues) => ({
@@ -37,6 +39,7 @@ export const AddBook = () => {
       const response = await CreateBook(inputValues);
 
       if (response.success) {
+        addBook(response.data);
         window.alert(response.message);
         setInputValues({
           title: "",
@@ -45,11 +48,11 @@ export const AddBook = () => {
           author: "",
           genre: "",
           size: "",
+          price: "",
           pageCount: "",
           issueYear: "",
           rating: "0",
         });
-        navigate("/");
       }
     } catch (error) {
       window.alert(error.message);
@@ -75,7 +78,6 @@ export const AddBook = () => {
             <label htmlFor="description">Description:</label>
             <textarea
               rows={3}
-              cols3
               id="description"
               name="description"
               onChange={onChange}
@@ -152,7 +154,12 @@ export const AddBook = () => {
               value={inputValues.issueYear}
             />
           </div>
-          <input className="btn submit" type="submit" defaultValue="Add Book" />
+          <input
+            onSubmit={onSubmit}
+            className="btn submit"
+            type="submit"
+            defaultValue="Add Book"
+          />
         </div>
       </form>
     </section>

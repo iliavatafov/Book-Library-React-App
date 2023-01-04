@@ -1,7 +1,6 @@
 .books-container {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
   justify-items: center;
   width: 80%;
   padding-bottom: 7rem;
@@ -11,7 +10,6 @@
 @media screen and (max-width: 1800px) {
   .books-container {
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
   }
 }
 
@@ -30,7 +28,6 @@
 @media screen and (max-width: 650px) {
   .books-container {
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr;
     width: 80%;
   }
 }

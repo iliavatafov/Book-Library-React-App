@@ -1,6 +1,8 @@
+import { useContext } from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { RegisterUser } from "../../apis/authentication";
+import { AuthContext } from "../../context/AuthContext";
 import "../Register/Register.css";
 
 export const Register = () => {
@@ -9,6 +11,8 @@ export const Register = () => {
     password: "",
     confirmPassword: "",
   });
+
+  const { userLogin } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -38,8 +42,9 @@ export const Register = () => {
       const response = await RegisterUser({ email, password });
 
       if (response.success) {
-        window.alert(response.message);
-        navigate("/login");
+        userLogin(response.data);
+        localStorage.setItem("user", JSON.stringify(response.data));
+        navigate("/");
         setInputValues({
           email: "",
           password: "",

@@ -1,8 +1,16 @@
+import { useNavigate } from "react-router-dom";
 import "../Books/BookCard.css";
 
 export const BookCard = ({ bookData }) => {
+  const navigate = useNavigate();
+
+  const ratingClass = "fas fa-star star-yellow";
+
   return (
-    <article className="book-card-container">
+    <article
+      onClick={() => navigate(`/details/${bookData.id}`)}
+      className="book-card-container"
+    >
       <div className="img-container">
         <img src={bookData.imageUrl} alt="book" />
       </div>
@@ -16,11 +24,21 @@ export const BookCard = ({ bookData }) => {
         <div className="price-rating-container">
           <div className="price">{bookData.price} BGN</div>
           <div className="rating">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
+            <i
+              className={bookData.rating > 0 ? ratingClass : "fas fa-star"}
+            ></i>
+            <i
+              className={bookData.rating > 1 ? ratingClass : "fas fa-star"}
+            ></i>
+            <i
+              className={bookData.rating > 2 ? ratingClass : "fas fa-star"}
+            ></i>
+            <i
+              className={bookData.rating > 3 ? ratingClass : "fas fa-star"}
+            ></i>
+            <i
+              className={bookData.rating > 4 ? ratingClass : "fas fa-star"}
+            ></i>
           </div>
         </div>
       </div>

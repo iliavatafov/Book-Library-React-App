@@ -1,14 +1,14 @@
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
-function PublicRoute({ children }) {
+function AdminProtectedRoute({ children }) {
   const { user } = useContext(AuthContext);
 
-  if (user.email) {
-    window.location.href = "/";
-  } else {
+  if (user.isAdmin) {
     return children;
+  } else {
+    window.location.href = "/";
   }
 }
 
-export default PublicRoute;
+export default AdminProtectedRoute;
