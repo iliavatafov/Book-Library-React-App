@@ -1,6 +1,8 @@
+import { useContext } from "react";
 import { createContext, useEffect, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 import { DeleteBook, GetAllBooks } from "../apis/books";
+import { LoadingContext } from "./LoadingContext";
 
 export const BookContext = createContext();
 
@@ -27,23 +29,37 @@ export const BookProvider = ({ children }) => {
   const [books, dispatcher] = useReducer(bookReducer, []);
   const navigate = useNavigate();
 
-  console.log(books);
+  const { showLoading, hideLoading } = useContext(LoadingContext);
 
   useEffect(() => {
-    GetAllBooks().then((result) =>
-      dispatcher({
+    showLoading();
+    GetAllBooks().then((result) => {
+      hideLoading();
+      window.localStorage.setItem("books", JSON.stringify(result.data));
+      return dispatcher({
         type: "ADD_BOOKS",
         payload: result.data,
-      })
-    );
+      });
+    });
   }, []);
+
+  const booksLocalStorage = JSON.parse(localStorage.getItem("books"));
+
+  if (books.length === 0 && booksLocalStorage) {
+    showLoading();
+    dispatcher({
+      type: "ADD_BOOKS",
+      payload: JSON.parse(localStorage.getItem("books")),
+    });
+    hideLoading();
+  }
 
   const addBook = (bookData) => {
     dispatcher({
       type: "ADD_BOOK",
       payload: bookData.data,
     });
-    navigate("/books");
+    navigate("/details/" + bookData.data.id);
   };
 
   const bookEdit = (bookId, bookData) => {
@@ -52,6 +68,7 @@ export const BookProvider = ({ children }) => {
       payload: bookData,
       bookId,
     });
+    navigate("/details/" + bookId);
   };
 
   const onDelete = (bookId) => {
@@ -60,7 +77,7 @@ export const BookProvider = ({ children }) => {
       type: "DELETE_BOOK",
       bookId,
     });
-    navigate("/books");
+    navigate("/books/");
   };
 
   return (

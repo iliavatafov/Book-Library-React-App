@@ -3,7 +3,9 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { RegisterUser } from "../../apis/authentication";
 import { AuthContext } from "../../context/AuthContext";
+import { LoadingContext } from "../../context/LoadingContext";
 import "../Register/Register.css";
+import { LoadingSpinner } from "../Spinner/Spinner";
 
 export const Register = () => {
   const [inputValues, setInputValues] = useState({
@@ -11,6 +13,8 @@ export const Register = () => {
     password: "",
     confirmPassword: "",
   });
+
+  const { showLoading, hideLoading, isLoading } = useContext(LoadingContext);
 
   const { userLogin } = useContext(AuthContext);
 
@@ -39,8 +43,9 @@ export const Register = () => {
     }
 
     try {
+      showLoading();
       const response = await RegisterUser({ email, password });
-
+      hideLoading();
       if (response.success) {
         userLogin(response.data);
         localStorage.setItem("user", JSON.stringify(response.data));
@@ -59,13 +64,16 @@ export const Register = () => {
         });
       }
     } catch (error) {
+      hideLoading();
       window.alert(error.message);
     }
   };
 
-  return (
+  return isLoading ? (
+    <LoadingSpinner />
+  ) : (
     <section id="register-page">
-      <form id="register" onSubmit={onSubmit}>
+      <form id="register" disabled={isLoading} onSubmit={onSubmit}>
         <div className="register-container">
           <h1>Register</h1>
           <div className="input-container">

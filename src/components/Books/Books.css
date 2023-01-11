@@ -7,6 +7,12 @@
   margin: 0 auto;
 }
 
+@media screen and (min-width: 2400px) {
+  .books-container {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+}
+
 @media screen and (max-width: 1800px) {
   .books-container {
     grid-template-columns: 1fr 1fr;

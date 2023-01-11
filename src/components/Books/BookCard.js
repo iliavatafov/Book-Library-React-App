@@ -22,7 +22,7 @@ export const BookCard = ({ bookData }) => {
         </p>
         <hr />
         <div className="price-rating-container">
-          <div className="price">{bookData.price} BGN</div>
+          <div className="price">{Number(bookData.price).toFixed(2)} BGN</div>
           <div className="rating">
             <i
               className={bookData.rating > 0 ? ratingClass : "fas fa-star"}

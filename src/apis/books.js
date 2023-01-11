@@ -1,4 +1,3 @@
-import { async } from "@firebase/util";
 import {
   addDoc,
   collection,
@@ -7,14 +6,14 @@ import {
   getDocs,
   orderBy,
   query,
+  updateDoc,
 } from "firebase/firestore";
 import moment from "moment/moment";
 import { fireDB } from "../FirebaseConfig/firebaseConfig";
 
 export const CreateBook = async (payload) => {
   try {
-    const createdAt = moment().format("MMMM Do YYYY, h:mm:ss a");
-
+    const createdAt = moment().format("DD-MM-YYYY HH:mm A");
     const response = await addDoc(collection(fireDB, "books"), {
       createdAt,
       ...payload,
@@ -36,22 +35,40 @@ export const CreateBook = async (payload) => {
   }
 };
 
+export const UpdateBook = async (payload) => {
+  try {
+    await updateDoc(doc(fireDB, "books", payload.id), {
+      ...payload,
+      updatedOn: moment().format("DD-MM-YYYY HH:mm A"),
+    });
+
+    return {
+      success: true,
+      message: "Book is updated successfylly",
+      data: payload,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: "Somthing went wrong",
+      data: null,
+    };
+  }
+};
+
 export const GetAllBooks = async () => {
   try {
-    let applications = [];
-    const qry = query(
-      collection(fireDB, "books"),
-      orderBy("createdAt", "desc")
-    );
+    let books = [];
+    const qry = query(collection(fireDB, "books"), orderBy("createdAt", "asc"));
     const querySnapshot = await getDocs(qry);
     querySnapshot.forEach((doc) => {
-      applications.push({ id: doc.id, ...doc.data() });
+      books.push({ id: doc.id, ...doc.data() });
     });
 
     return {
       success: true,
       message: "The books are fetched correctly",
-      data: applications,
+      data: books,
     };
   } catch (error) {
     return {

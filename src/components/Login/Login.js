@@ -3,7 +3,9 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { LoginUser } from "../../apis/authentication";
 import { AuthContext } from "../../context/AuthContext";
+import { LoadingContext } from "../../context/LoadingContext";
 import "../Login/Login.css";
+import { LoadingSpinner } from "../Spinner/Spinner";
 
 export const Login = () => {
   const [inputValues, setInputValues] = useState({
@@ -11,6 +13,7 @@ export const Login = () => {
     password: "",
   });
 
+  const { showLoading, hideLoading, isLoading } = useContext(LoadingContext);
   const { userLogin } = useContext(AuthContext);
 
   const navigate = useNavigate();
@@ -33,8 +36,9 @@ export const Login = () => {
     }
 
     try {
+      showLoading();
       const response = await LoginUser({ email, password });
-
+      hideLoading();
       if (response.success) {
         userLogin(response.data);
         localStorage.setItem("user", JSON.stringify(response.data));
@@ -51,13 +55,16 @@ export const Login = () => {
         });
       }
     } catch (error) {
+      hideLoading();
       window.alert(error.message);
     }
   };
 
-  return (
+  return isLoading ? (
+    <LoadingSpinner />
+  ) : (
     <section id="login-page">
-      <form id="login" onSubmit={onSubmit}>
+      <form id="login" onSubmit={onSubmit} disabled={isLoading}>
         <div className="login-container">
           <h1>Login</h1>
           <div className="input-container">

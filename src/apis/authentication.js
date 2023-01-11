@@ -27,7 +27,7 @@ export const LoginUser = async (payload) => {
 
       const decryptedPassword = CryptoJS.AES.decrypt(
         user.password,
-        "book-library"
+        "we-love-books"
       ).toString(CryptoJS.enc.Utf8);
 
       if (decryptedPassword === payload.password) {
@@ -77,19 +77,26 @@ export const RegisterUser = async (payload) => {
 
     const encryptedPassword = CryptoJS.AES.encrypt(
       payload.password,
-      "book-library"
+      "we-love-books"
     ).toString();
 
     payload.password = encryptedPassword;
 
-    const response = await addDoc(collection(fireDB, "users"), payload);
+    const data = {
+      ...payload,
+      favoriteBooks: [],
+    };
+
+    const response = await addDoc(collection(fireDB, "users"), {
+      ...data,
+    });
 
     return {
       success: true,
       message: "User Registered Successfully",
       data: {
         id: response.id,
-        ...payload,
+        ...data,
       },
     };
   } catch (error) {

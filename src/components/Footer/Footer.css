@@ -53,6 +53,7 @@
 
 .footer .social-links .list i:hover {
   color: tomato;
+  font-size: 1.5rem;
 }
 
 .text-content {

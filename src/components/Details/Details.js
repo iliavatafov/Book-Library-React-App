@@ -1,22 +1,87 @@
+import { useEffect, useState } from "react";
 import { useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { GetUserProfile, UpdateUser } from "../../apis/users";
 import { AuthContext } from "../../context/AuthContext";
 import { BookContext } from "../../context/BookContext";
+import { LoadingContext } from "../../context/LoadingContext";
 
 import "../Details/Details.css";
+import { LoadingSpinner } from "../Spinner/Spinner";
 
 export const Details = () => {
+  const [userData, setUserData] = useState({});
   const { books, onDelete } = useContext(BookContext);
-
   const { id } = useParams();
-
   const { user } = useContext(AuthContext);
+  const { showLoading, hideLoading, isLoading } = useContext(LoadingContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    showLoading();
+    GetUserProfile(user.id).then((res) => {
+      hideLoading();
+      setUserData(res);
+    });
+  }, [user]);
 
   const bookData = books.filter((book) => book.id === id)[0];
 
   const ratingClass = "fas fa-star star-yellow";
 
-  return (
+  const addToFavorites = async () => {
+    const currentFavoriteBooks = userData.data.favoriteBooks;
+
+    let favoriteBooks = [];
+
+    if (!currentFavoriteBooks) {
+      favoriteBooks = [bookData];
+    } else {
+      favoriteBooks = [bookData, ...currentFavoriteBooks];
+    }
+
+    try {
+      const result = await UpdateUser({
+        ...userData.data,
+        favoriteBooks,
+        id: user.id,
+      });
+
+      if (result.success) {
+        navigate("/favorites");
+      } else {
+        window.alert(result.message);
+      }
+    } catch (error) {
+      window.alert(error.message);
+    }
+  };
+
+  const deleteFromFavorites = async () => {
+    const currentFavoriteBooks = userData.data.favoriteBooks;
+
+    const favoriteBooks = currentFavoriteBooks.filter((b) => b.id !== id);
+
+    try {
+      const result = await UpdateUser({
+        ...userData.data,
+        favoriteBooks,
+        id: user.id,
+      });
+
+      if (result.success) {
+        navigate("/favorites");
+      } else {
+        window.alert(result.message);
+      }
+    } catch (error) {
+      window.alert(error.message);
+    }
+  };
+
+  return isLoading ? (
+    <LoadingSpinner />
+  ) : (
     <section className="details-section">
       <div className="details-container">
         <header className="details-header">
@@ -41,7 +106,7 @@ export const Details = () => {
               ></i>
             </div>
           </div>
-          <div className="price">{bookData.price} BGN</div>
+          <div className="price">{Number(bookData.price).toFixed(2)} BGN</div>
         </header>
         <main>
           <div className="img-container">
@@ -59,7 +124,12 @@ export const Details = () => {
               )}
               {user.isAdmin && (
                 <>
-                  <input type="submit" className="add-button" value="Edit" />
+                  <input
+                    type="submit"
+                    className="add-button"
+                    value="Edit"
+                    onClick={() => navigate(`/edit-book/${id}`)}
+                  />
                   <input
                     onClick={() => onDelete(id)}
                     type="submit"
@@ -68,13 +138,31 @@ export const Details = () => {
                   />
                 </>
               )}
-              {user.email && !user.isAdmin ? (
+              {user.email &&
+              !user.isAdmin &&
+              !userData.data?.favoriteBooks.some((x) => x.id === id) ? (
                 <div className="favorites-wrapper">
-                  <button type="submit" className="favorites-btn">
+                  <button
+                    onClick={addToFavorites}
+                    type="submit"
+                    className="favorites-btn"
+                  >
                     <i className="far fa-heart"></i> Add to favorites
                   </button>
                 </div>
-              ) : null}
+              ) : (
+                user.email && (
+                  <div className="favorites-wrapper">
+                    <button
+                      onClick={deleteFromFavorites}
+                      type="submit"
+                      className="favorites-btn"
+                    >
+                      <i className="far fa-heart"></i> Delete from favorites
+                    </button>
+                  </div>
+                )
+              )}
             </div>
             <ul className="book-detail-list">
               <li className="list-item">
